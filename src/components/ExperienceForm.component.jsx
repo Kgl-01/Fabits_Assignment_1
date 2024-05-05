@@ -53,7 +53,7 @@ const ExperienceForm = () => {
               value={data.title}
               checked={data.title == currentOption}
               style={{ display: "none" }}
-              onClick={(e) => {
+              onChange={(e) => {
                 setCurrentOption(e.target.value)
               }}
             />

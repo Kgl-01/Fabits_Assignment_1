@@ -6,4 +6,6 @@ export const NavigationContext = createContext({
   handleChangePreviousPage: () => null,
   panNo: null,
   hanleChangePanNo: () => null,
+  loading: null,
+  handleChangeLoading: () => null,
 })

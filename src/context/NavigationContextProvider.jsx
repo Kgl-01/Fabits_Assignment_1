@@ -4,8 +4,14 @@ import { NavigationContext } from "./navigationContext"
 export const NavigationContextProvider = ({ children }) => {
   const [pageCount, setPageCount] = useState(1)
   const [panNo, setPanNo] = useState("CRYPG****D")
+  const [loading, setLoading] = useState(true)
+
   const handleChangeNextPage = () => {
-    setPageCount((c) => c + 1)
+    if (pageCount > 2) {
+      handleChangeLoading()
+    } else {
+      setPageCount((c) => c + 1)
+    }
   }
 
   const handleChangePreviousPage = () => {
@@ -16,6 +22,10 @@ export const NavigationContextProvider = ({ children }) => {
     setPanNo(e.target.value)
   }
 
+  const handleChangeLoading = () => {
+    setLoading(false)
+  }
+
   return (
     <NavigationContext.Provider
       value={{
@@ -24,6 +34,8 @@ export const NavigationContextProvider = ({ children }) => {
         handleChangePreviousPage,
         hanleChangePanNo,
         panNo,
+        loading,
+        handleChangeLoading,
       }}
     >
       {children}

@@ -62,7 +62,7 @@ const PanCardDetailsForm = () => {
               value={data.title}
               checked={data.title == currentOption}
               style={{ display: "none" }}
-              onClick={(e) => {
+              onChange={(e) => {
                 setCurrentOption(e.target.value)
               }}
             />
@@ -92,6 +92,7 @@ const PanCardDetailsForm = () => {
           id="pan-no"
           type="text"
           {...styleX.props(styles.input)}
+          autoCapitalize="on"
         />
       </div>
     </div>
