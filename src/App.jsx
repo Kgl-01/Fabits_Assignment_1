@@ -3,7 +3,9 @@ import * as styleX from "@stylexjs/stylex"
 import AppBackground from "./assets/appBackground.png"
 import FormBackground from "./assets/formBackground.png"
 import ExperienceForm from "./components/ExperienceForm.component"
-import { useNavigationContext } from "./assets/context/useNavigationContext"
+import { useNavigationContext } from "./context/useNavigationContext"
+import ArrowLeft from "./assets/keyboard_backspace.png"
+import ArrowRight from "./assets/arrow_right_alt.svg"
 
 const sm = "@media (max-width: 476px)"
 
@@ -68,6 +70,8 @@ const styles = styleX.create({
     display: "flex",
     justifyContent: "space-between",
     gap: "2rem",
+    display: "flex",
+    alignItems: "center",
   },
 
   goBack: {
@@ -140,14 +144,15 @@ function App() {
                 {...styleX.props(styles.primaryButton, styles.goBack)}
                 onClick={handleChangePreviousPage}
               >
-                &#129120;
+                <img src={ArrowLeft} />
               </button>
             )}
             <button
               {...styleX.props(styles.primaryButton)}
               onClick={handleChangeNextPage}
             >
-              <>{buttonText?.name}</> <span>&#129122;</span>
+              <>{buttonText?.name}</>{" "}
+              <img src={ArrowRight} style={{ width: "fit-content" }} />
             </button>
           </div>
         </div>

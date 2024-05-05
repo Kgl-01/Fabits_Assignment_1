@@ -4,6 +4,8 @@ import { NavigationContext } from "./navigationContext"
 export const NavigationContextProvider = ({ children }) => {
   const [pageCount, setPageCount] = useState(1)
   const handleChangeNextPage = () => {
+    if (pageCount > 2) return
+
     setPageCount((c) => c + 1)
   }
 
