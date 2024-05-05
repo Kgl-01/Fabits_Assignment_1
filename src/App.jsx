@@ -6,6 +6,7 @@ import ExperienceForm from "./components/ExperienceForm.component"
 import { useNavigationContext } from "./context/useNavigationContext"
 import ArrowLeft from "./assets/keyboard_backspace.png"
 import ArrowRight from "./assets/arrow_right_alt.svg"
+import PanCardDetailsForm from "./components/PanCardDetailsForm.component"
 
 const sm = "@media (max-width: 476px)"
 
@@ -86,9 +87,17 @@ function App() {
   const { pageCount, handleChangeNextPage, handleChangePreviousPage } =
     useNavigationContext()
 
-  const buttonText = {
-    1: { name: "Next" },
-    2: { name: "Complete" },
+  const formDetails = {
+    1: {
+      title: "How much trading experience do you have?",
+      buttonName: "Next",
+      formComponent: <ExperienceForm />,
+    },
+    2: {
+      title: "Please enter your PAN details to complete verification.",
+      buttonName: "Complete",
+      formComponent: <PanCardDetailsForm />,
+    },
   }[pageCount]
 
   return (
@@ -122,7 +131,7 @@ function App() {
             }}
           >
             <span style={{ fontSize: "1.3rem", fontWeight: "600" }}>
-              How much trading experience do you have?
+              {formDetails?.title}
             </span>
             <span
               style={{
@@ -137,7 +146,7 @@ function App() {
               {pageCount}/2
             </span>
           </div>
-          <ExperienceForm />
+          {formDetails.formComponent}
           <div style={{ width: "90%", display: "flex", gap: "1rem" }}>
             {pageCount == 2 && (
               <button
@@ -151,7 +160,7 @@ function App() {
               {...styleX.props(styles.primaryButton)}
               onClick={handleChangeNextPage}
             >
-              <>{buttonText?.name}</>{" "}
+              <>{formDetails?.buttonName}</>{" "}
               <img src={ArrowRight} style={{ width: "fit-content" }} />
             </button>
           </div>

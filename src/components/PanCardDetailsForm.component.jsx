@@ -1,5 +1,6 @@
 import * as styleX from "@stylexjs/stylex"
 import { useState } from "react"
+import { useNavigationContext } from "../context/useNavigationContext"
 
 const styles = styleX.create({
   ul: {
@@ -23,21 +24,29 @@ const styles = styleX.create({
     background: isActive && "rgba(131, 167, 32, 0.08)",
     fontSize: "1.2rem",
     padding: "0.5rem",
+    color: "#394C03",
   }),
+  input: {
+    textAlign: "center",
+    padding: "0.5rem 0rem",
+    fontSize: "0.9rem",
+    borderRadius: "0.5rem",
+    border: "2px solid #EAF0BB",
+    background: "#F5F8CC",
+    color: "#394C03",
+    fontWeight: "600",
+    letterSpacing: "0.2rem",
+  },
 })
 
-const formData = [
-  { title: "None", content: "<1Y" },
-  { title: "Beginner", content: "1Y-3Y" },
-  { title: "Mid", content: "3Y-5Y" },
-  { title: "Pro", content: ">5Y" },
-]
+const formData = [{ title: "Manual" }, { title: "Automatic" }]
 
-const ExperienceForm = () => {
-  const [currentOption, setCurrentOption] = useState("Beginner")
+const PanCardDetailsForm = () => {
+  const [currentOption, setCurrentOption] = useState("Automatic")
+  const { panNo, hanleChangePanNo } = useNavigationContext()
+
   return (
-    <>
-      {" "}
+    <div style={{ width: "100%" }}>
       <ul {...styleX.props(styles.ul)}>
         {formData.map((data, index) => (
           <li {...styleX.props(styles.li(data.title == currentOption))}>
@@ -61,8 +70,32 @@ const ExperienceForm = () => {
           </li>
         ))}
       </ul>
-    </>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "space-between",
+          padding: "0.5rem 1.2rem",
+          alignItems: "center",
+        }}
+      >
+        <label
+          style={{ color: "#575757", fontSize: "0.9rem" }}
+          htmlFor="pan-no"
+        >
+          PAN Card Number
+        </label>
+        <input
+          name="panNo"
+          value={panNo}
+          onChange={(e) => hanleChangePanNo(e)}
+          id="pan-no"
+          type="text"
+          {...styleX.props(styles.input)}
+        />
+      </div>
+    </div>
   )
 }
 
-export default ExperienceForm
+export default PanCardDetailsForm
