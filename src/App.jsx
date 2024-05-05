@@ -16,7 +16,7 @@ const driveCar = styleX.keyframes({
     transform: "translateX(-8rem)",
   },
   to: {
-    transform: "translateX(calc(100vw + 8rem))",
+    transform: "translateX(100vw)",
   },
 })
 
@@ -44,6 +44,7 @@ const styles = styleX.create({
     width: "100%",
     position: "absolute",
     bottom: 0,
+    overflow: "hidden",
   },
   formBg: {
     width: "100%",
