@@ -39,7 +39,7 @@ const styles = styleX.create({
 })
 
 const InfoCard = ({ info, index }) => {
-  const linkedinUrl = "www.linkedin.com/in/kgl01"
+  const linkedinUrl = "https://www.linkedin.com/in/kgl01"
 
   return (
     <div
