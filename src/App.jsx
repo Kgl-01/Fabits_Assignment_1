@@ -9,8 +9,11 @@ import ArrowRight from "./assets/arrow_right_alt.svg"
 import PanCardDetailsForm from "./components/PanCardDetailsForm.component"
 import LoadingScreenBackground from "./assets/loadingBackgroundimg.png"
 import ProfileIcon from "./assets/profileIconNew.svg"
-import CarImage from "./assets/car-svgrepo-com.svg"
+import AuthIcon from "./assets/authIcon.svg"
+import AddressIcon from "./assets/addressIcon.svg"
+
 import CarImgV2 from "./assets/new_car_rcb.png"
+import InfoCard from "./components/InfoCard.component"
 
 const driveCar = styleX.keyframes({
   from: {
@@ -29,11 +32,34 @@ const drivePaused = styleX.keyframes({
     transform: "translateX(50%) translateY(0rem) ",
     transition: "all 1s",
   },
-  "53%": {
-    transform: "translateX(53%) translateY(0rem)",
+  "55%": {
+    transform: "translateX(50%) translateY(-0.2rem)",
     transition: "all 4s",
   },
-
+  "60%": {
+    transform: "translateX(50%) translateY(0.2rem)",
+    transition: "all 4s",
+  },
+  "65%": {
+    transform: "translateX(50%) translateY(-0.2rem)",
+    transition: "all 4s",
+  },
+  "70%": {
+    transform: "translateX(50%) translateY(0.2rem)",
+    transition: "all 4s",
+  },
+  "75%": {
+    transform: "translateX(50%) translateY(-0.2rem)",
+    transition: "all 4s",
+  },
+  "80%": {
+    transform: "translateX(50%) translateY(0.2rem)",
+    transition: "all 4s",
+  },
+  "85%": {
+    transform: "translateX(50%) translateY(0rem)",
+    transition: "all 4s",
+  },
   "100%": {
     transform: "translateX(100vw)",
   },
@@ -116,8 +142,13 @@ const styles = styleX.create({
     position: "relative",
   },
   loadingScreenBg: (loading) => ({
-    height: !loading ? "85vh" : "50vh",
+    // height: !loading ? "85vh" : "50vh",
     borderRadius: "2rem 2rem 0rem 0rem",
+    width: "100%",
+    transform: `translateY(${loading ? 10 : 0}%)`,
+    filter: `blur(${!loading ? 0.3 : 0}rem)`,
+    transition: "transform 0.25s, filter 1s",
+    position: "relative",
   }),
   moveCar: {
     width: "8rem",
@@ -131,16 +162,16 @@ const styles = styleX.create({
     animationFillMode: "forwards",
   },
   fetchDetails: {
-    position: "absolute",
-    bottom: "-12.5rem",
     width: "10rem",
     left: "0",
     transform: "translateX(-10rem)",
     animationName: drivePaused,
     animationDuration: "8s",
     animationDirection: "normal",
-    animationIterationCount: "1",
+    animationIterationCount: "infinite",
     animationFillMode: "forwards",
+    position: "absolute",
+    bottom: "3.3rem",
   },
 })
 
@@ -166,6 +197,41 @@ function App() {
       formComponent: <PanCardDetailsForm />,
     },
   }[pageCount]
+
+  const cardInfo = [
+    {
+      id: 1,
+      src: ProfileIcon,
+      header: panNo,
+      subHeader: "ASHAR RAI MUJEEB",
+      content: [
+        { infoHeader: "Fetched Via", infoContent: "NSDL" },
+        { infoHeader: "Last Updated", infoContent: "24/04/2024" },
+      ],
+    },
+    {
+      id: 2,
+      src: AuthIcon,
+      header: "Address",
+      subHeader: "Aadhaar",
+      secondarySubHeader: "UID",
+      content: [
+        { infoHeader: "Fetched Via", infoContent: "Digio" },
+        { infoHeader: "Date of birth", infoContent: "18/10/1994" },
+      ],
+    },
+    {
+      id: 3,
+      src: AddressIcon,
+      header: "Address",
+      subHeader: "16/2, 8 Jat Regiment, c/o 56 APO",
+
+      content: [
+        { infoHeader: "Fetched Via", infoContent: "Digio" },
+        { infoHeader: "Address Type", infoContent: "Correspondence" },
+      ],
+    },
+  ]
 
   return (
     <div {...styleX.props(styles.main)}>
@@ -241,65 +307,53 @@ function App() {
         <div {...styleX.props(styles.formContainer)}>
           <img
             src={LoadingScreenBackground}
-            {...styleX.props(styles.bg, styles.loadingScreenBg(loading))}
+            {...styleX.props(styles.loadingScreenBg(loading))}
           />
+          {loading && (
+            <img src={CarImgV2} {...styleX.props(styles.fetchDetails)} />
+          )}
           <div
             style={{
               position: "absolute",
-              top: 0,
-              padding: "0rem 0rem 0rem 2rem",
-              width: "90%",
+              top: loading ? "12%" : "0",
+              display: "flex",
+              justifyContent: "center",
             }}
           >
             {loading ? (
-              <>
+              <div style={{ width: "100vw", padding: "0rem 1.5rem" }}>
                 <h2>Fetching your PAN Details</h2>
                 <small style={{ margin: "0rem", padding: "0rem" }}>
                   Getting your PAN details by your chosen mehtod
                 </small>
-                <img src={CarImgV2} {...styleX.props(styles.fetchDetails)} />
-              </>
+              </div>
             ) : (
-              <>
-                <h2 style={{ padding: "0rem", margin: "0rem" }}>
-                  Verify you details
-                </h2>
-                <small>Aadhar link found</small>
+              <div
+                style={{
+                  width: "100vw",
+                  padding: "1.2rem 1.5rem",
+                }}
+              >
+                <>
+                  <h2 style={{ padding: "0rem", margin: "0rem" }}>
+                    Verify you details
+                  </h2>
+                  <div>Aadhaar link found</div>
+                </>
 
                 <div
                   style={{
-                    width: "100%",
-                    border: "1px solid red",
-                    padding: "0rem 0rem 0.5rem 1rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1rem",
+                    marginTop: "0.5rem",
                   }}
                 >
-                  <figure
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: "0rem",
-                      margin: "0rem",
-                      width: "100%",
-                      marginTop: "1rem",
-                      gap: "1rem",
-                    }}
-                  >
-                    <img src={ProfileIcon} style={{}} />
-                    <figcaption>
-                      <div style={{ fontSize: "1.5rem", fontWeight: "600" }}>
-                        {panNo}
-                      </div>
-                      <span>ASHAR RAI MUJEEB</span>
-                    </figcaption>
-                  </figure>
-                  <>
-                    <div>
-                      <div>Fetched Via</div>
-                      <div>Fetched Via</div>
-                    </div>
-                  </>
+                  {cardInfo.map((info, index) => (
+                    <InfoCard index={index} info={info} key={info.id} />
+                  ))}
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>
