@@ -1,14 +1,23 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { NavigationContext } from "./navigationContext"
 
 export const NavigationContextProvider = ({ children }) => {
   const [pageCount, setPageCount] = useState(1)
   const [panNo, setPanNo] = useState("CRYPG****D")
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const currentPageValue = useRef(null)
 
-  const handleChangeNextPage = () => {
-    if (pageCount > 2) {
-      handleChangeLoading()
+  const handleChangeNextPage = async (e) => {
+    const { value } = e.target
+    currentPageValue.current = value.toLowerCase()
+    if (value == "Complete") {
+      console.log(value)
+      console.log("hello")
+      setLoading((c) => !c)
+
+      await setTimeout(() => {
+        setLoading((c) => !c)
+      }, 8000)
     } else {
       setPageCount((c) => c + 1)
     }
@@ -36,6 +45,7 @@ export const NavigationContextProvider = ({ children }) => {
         panNo,
         loading,
         handleChangeLoading,
+        currentPageValue,
       }}
     >
       {children}

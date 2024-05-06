@@ -10,12 +10,31 @@ import PanCardDetailsForm from "./components/PanCardDetailsForm.component"
 import LoadingScreenBackground from "./assets/loadingBackgroundimg.png"
 import ProfileIcon from "./assets/profileIconNew.svg"
 import CarImage from "./assets/car-svgrepo-com.svg"
+import CarImgV2 from "./assets/new_car_rcb.png"
 
 const driveCar = styleX.keyframes({
   from: {
     transform: "translateX(-8rem)",
   },
   to: {
+    transform: "translateX(100vw)",
+  },
+})
+
+const drivePaused = styleX.keyframes({
+  "0%": {
+    transform: "translateX(-10rem)",
+  },
+  "50%": {
+    transform: "translateX(50%) translateY(0rem) ",
+    transition: "all 1s",
+  },
+  "53%": {
+    transform: "translateX(53%) translateY(0rem)",
+    transition: "all 4s",
+  },
+
+  "100%": {
     transform: "translateX(100vw)",
   },
 })
@@ -97,7 +116,7 @@ const styles = styleX.create({
     position: "relative",
   },
   loadingScreenBg: (loading) => ({
-    height: !loading && "85vh",
+    height: !loading ? "85vh" : "50vh",
     borderRadius: "2rem 2rem 0rem 0rem",
   }),
   moveCar: {
@@ -107,9 +126,20 @@ const styles = styleX.create({
     transform: "translateX(-8rem)",
     animationName: driveCar,
     animationDuration: "8s",
-    animationDelay: "8s",
     animationDirection: "normal",
     animationIterationCount: "infinite",
+    animationFillMode: "forwards",
+  },
+  fetchDetails: {
+    position: "absolute",
+    bottom: "-12.5rem",
+    width: "10rem",
+    left: "0",
+    transform: "translateX(-10rem)",
+    animationName: drivePaused,
+    animationDuration: "8s",
+    animationDirection: "normal",
+    animationIterationCount: "1",
     animationFillMode: "forwards",
   },
 })
@@ -121,6 +151,7 @@ function App() {
     handleChangeNextPage,
     handleChangePreviousPage,
     loading,
+    currentPageValue,
   } = useNavigationContext()
 
   const formDetails = {
@@ -140,7 +171,7 @@ function App() {
     <div {...styleX.props(styles.main)}>
       <img src={AppBackground} {...styleX.props(styles.bg)} loading="lazy" />
       <div {...styleX.props(styles.overlay)} />
-      {pageCount < 3 ? (
+      {currentPageValue?.current != "complete" ? (
         <div {...styleX.props(styles.formContainer)}>
           <figure
             style={{
@@ -151,7 +182,7 @@ function App() {
               position: "relative",
             }}
           >
-            <img src={CarImage} {...styleX.props(styles.moveCar)} />
+            <img src={CarImgV2} {...styleX.props(styles.moveCar)} />
 
             <img src={FormBackground} {...styleX.props(styles.formBg)} />
             <figcaption {...styleX.props(styles.figcaption)}>
@@ -197,7 +228,7 @@ function App() {
               )}
               <button
                 {...styleX.props(styles.primaryButton)}
-                onClick={handleChangeNextPage}
+                onClick={(e) => handleChangeNextPage(e)}
                 value={formDetails.buttonName}
               >
                 <>{formDetails?.buttonName}</>{" "}
@@ -226,6 +257,7 @@ function App() {
                 <small style={{ margin: "0rem", padding: "0rem" }}>
                   Getting your PAN details by your chosen mehtod
                 </small>
+                <img src={CarImgV2} {...styleX.props(styles.fetchDetails)} />
               </>
             ) : (
               <>
