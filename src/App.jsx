@@ -16,15 +16,18 @@ import CarImgV2 from "./assets/new_car_rcb.png"
 import InfoCard from "./components/InfoCard.component"
 
 const driveCar = styleX.keyframes({
-  from: {
+  "0%": {
     transform: "translateX(-8rem)",
   },
-  to: {
+  "50%": {
+    transform: "translateX(100vw)",
+  },
+  "100%": {
     transform: "translateX(100vw)",
   },
 })
 
-const drivePaused = styleX.keyframes({
+const pauseDrive = styleX.keyframes({
   "0%": {
     transform: "translateX(-10rem)",
   },
@@ -142,7 +145,7 @@ const styles = styleX.create({
     position: "relative",
   },
   loadingScreenBg: (loading) => ({
-    // height: !loading ? "85vh" : "50vh",
+    height: !loading ? "90vh" : "50vh",
     borderRadius: "2rem 2rem 0rem 0rem",
     width: "100%",
     transform: `translateY(${loading ? 10 : 0}%)`,
@@ -161,17 +164,17 @@ const styles = styleX.create({
     animationIterationCount: "infinite",
     animationFillMode: "forwards",
   },
-  fetchDetails: {
+  slowDownAndSpeedUp: {
     width: "10rem",
     left: "0",
     transform: "translateX(-10rem)",
-    animationName: drivePaused,
+    animationName: pauseDrive,
     animationDuration: "8s",
     animationDirection: "normal",
-    animationIterationCount: "infinite",
+    animationIterationCount: 1,
     animationFillMode: "forwards",
     position: "absolute",
-    bottom: "3.3rem",
+    bottom: 0,
   },
 })
 
@@ -310,7 +313,7 @@ function App() {
             {...styleX.props(styles.loadingScreenBg(loading))}
           />
           {loading && (
-            <img src={CarImgV2} {...styleX.props(styles.fetchDetails)} />
+            <img src={CarImgV2} {...styleX.props(styles.slowDownAndSpeedUp)} />
           )}
           <div
             style={{

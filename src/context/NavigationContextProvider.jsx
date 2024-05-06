@@ -11,8 +11,6 @@ export const NavigationContextProvider = ({ children }) => {
     const { value } = e.target
     currentPageValue.current = value.toLowerCase()
     if (value == "Complete") {
-      console.log(value)
-      console.log("hello")
       setLoading((c) => !c)
 
       await setTimeout(() => {
