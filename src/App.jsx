@@ -11,6 +11,7 @@ import LoadingScreenBackground from "./assets/loadingBackgroundimg.png"
 import ProfileIcon from "./assets/profileIconNew.svg"
 import AuthIcon from "./assets/authIcon.svg"
 import AddressIcon from "./assets/addressIcon.svg"
+import CloseIcon from "./assets/closeIcon.svg"
 
 import CarImgV2 from "./assets/new_car_rcb.png"
 import InfoCard from "./components/InfoCard.component"
@@ -80,20 +81,24 @@ const styles = styleX.create({
     height: "100%",
     zIndex: "-1",
   },
-  overlay: {
+  overlay: (isClosed) => ({
     opacity: "0.6",
     background: "#F4F7FE",
     width: "100%",
     height: "100vh",
     position: "absolute",
     top: 0,
-  },
-  formContainer: {
+    display: isClosed ? "none" : "block",
+  }),
+  formContainer: (isClosed) => ({
     width: "100%",
     position: "absolute",
     bottom: 0,
     overflow: "hidden",
-  },
+    display: isClosed ? "none" : "block",
+    transform: `translateY(${isClosed ? 100 : 0}%)`,
+    transition: "transform 1s, display 1s",
+  }),
   formBg: {
     width: "100%",
     margin: "0",
@@ -186,9 +191,13 @@ function App() {
     handleChangePreviousPage,
     loading,
     currentPageValue,
+    closeForm,
+    handleCloseForm,
+    handleOpenForm,
   } = useNavigationContext()
 
   const formDetails = {
+    0: {},
     1: {
       title: "How much trading experience do you have?",
       buttonName: "Next",
@@ -239,128 +248,179 @@ function App() {
   return (
     <div {...styleX.props(styles.main)}>
       <img src={AppBackground} {...styleX.props(styles.bg)} loading="lazy" />
-      <div {...styleX.props(styles.overlay)} />
-      {currentPageValue?.current != "complete" ? (
-        <div {...styleX.props(styles.formContainer)}>
-          <figure
-            style={{
-              margin: "0",
-              padding: "0",
-              display: "flex",
-              flexDirection: "column",
-              position: "relative",
-            }}
+      <div {...styleX.props(styles.overlay(closeForm))} />
+      {closeForm && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: "1rem",
+            display: "flex",
+            justifyContent: "center",
+            width: "100vw",
+          }}
+        >
+          <button
+            {...styleX.props(styles.primaryButton)}
+            style={{ width: "fit-content" }}
+            onClick={handleOpenForm}
           >
-            <img src={CarImgV2} {...styleX.props(styles.moveCar)} />
-
-            <img src={FormBackground} {...styleX.props(styles.formBg)} />
-            <figcaption {...styleX.props(styles.figcaption)}>
-              <div>Get Started with Fabits</div>
-              <small {...styleX.props(styles.small)}>
-                Answer a few questions to begin onboarding
-              </small>
-            </figcaption>
-          </figure>
-          <div {...styleX.props(styles.form)}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                padding: "0.8rem",
-              }}
-            >
-              <span style={{ fontSize: "1.3rem", fontWeight: "600" }}>
-                {formDetails?.title}
-              </span>
-              <span
-                style={{
-                  color: "#fff",
-                  background: "#000",
-                  alignSelf: "flex-start",
-                  fontSize: "1.1rem",
-                  padding: "0.2rem 1rem",
-                  borderRadius: "1.3rem",
-                }}
-              >
-                {pageCount}/2
-              </span>
-            </div>
-            {formDetails.formComponent}
-            <div style={{ width: "90%", display: "flex", gap: "1rem" }}>
-              {pageCount == 2 && (
-                <button
-                  {...styleX.props(styles.primaryButton, styles.goBack)}
-                  onClick={handleChangePreviousPage}
-                >
-                  <img src={ArrowLeft} />
-                </button>
-              )}
-              <button
-                {...styleX.props(styles.primaryButton)}
-                onClick={(e) => handleChangeNextPage(e)}
-                value={formDetails.buttonName}
-              >
-                <>{formDetails?.buttonName}</>{" "}
-                <img src={ArrowRight} style={{ width: "fit-content" }} />
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div {...styleX.props(styles.formContainer)}>
-          <img
-            src={LoadingScreenBackground}
-            {...styleX.props(styles.loadingScreenBg(loading))}
-          />
-          {loading && (
-            <img src={CarImgV2} {...styleX.props(styles.slowDownAndSpeedUp)} />
-          )}
-          <div
-            style={{
-              position: "absolute",
-              top: loading ? "12%" : "0",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            {loading ? (
-              <div style={{ width: "100vw", padding: "0rem 1.5rem" }}>
-                <h2>Fetching your PAN Details</h2>
-                <small style={{ margin: "0rem", padding: "0rem" }}>
-                  Getting your PAN details by your chosen mehtod
-                </small>
-              </div>
-            ) : (
-              <div
-                style={{
-                  width: "100vw",
-                  padding: "1.2rem 1.5rem",
-                }}
-              >
-                <>
-                  <h2 style={{ padding: "0rem", margin: "0rem" }}>
-                    Verify you details
-                  </h2>
-                  <div>Aadhaar link found</div>
-                </>
-
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1rem",
-                    marginTop: "0.5rem",
-                  }}
-                >
-                  {cardInfo.map((info, index) => (
-                    <InfoCard index={index} info={info} key={info.id} />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+            Open Onboarding Form
+          </button>
         </div>
       )}
+      <div {...styleX.props(styles.formContainer(closeForm))}>
+        {!loading && (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "2rem 0rem 0rem 0rem",
+            }}
+          >
+            <button
+              style={{
+                left: "40%",
+                background: "none",
+                transform: "translateY(0%)",
+                transition: "transform 0.5s",
+                zIndex: "10",
+                border: "none",
+                cursor: "pointer",
+              }}
+              onClick={handleCloseForm}
+            >
+              <img src={CloseIcon} />
+            </button>
+          </div>
+        )}
+
+        {currentPageValue?.current != "complete" ? (
+          <>
+            <figure
+              style={{
+                margin: "0",
+                padding: "0",
+                display: "flex",
+                flexDirection: "column",
+                position: "relative",
+              }}
+            >
+              <img src={CarImgV2} {...styleX.props(styles.moveCar)} />
+
+              <img src={FormBackground} {...styleX.props(styles.formBg)} />
+              <figcaption {...styleX.props(styles.figcaption)}>
+                <div>Get Started with Fabits</div>
+                <small {...styleX.props(styles.small)}>
+                  Answer a few questions to begin onboarding
+                </small>
+              </figcaption>
+            </figure>
+            <div {...styleX.props(styles.form)}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "0.8rem",
+                }}
+              >
+                <span style={{ fontSize: "1.3rem", fontWeight: "600" }}>
+                  {formDetails?.title}
+                </span>
+                <span
+                  style={{
+                    color: "#fff",
+                    background: "#000",
+                    alignSelf: "flex-start",
+                    fontSize: "1.1rem",
+                    padding: "0.2rem 1rem",
+                    borderRadius: "1.3rem",
+                  }}
+                >
+                  {pageCount}/2
+                </span>
+              </div>
+              {formDetails?.formComponent}
+              <div style={{ width: "90%", display: "flex", gap: "1rem" }}>
+                {pageCount == 2 && (
+                  <button
+                    {...styleX.props(styles.primaryButton, styles.goBack)}
+                    onClick={handleChangePreviousPage}
+                  >
+                    <img src={ArrowLeft} />
+                  </button>
+                )}
+                <button
+                  {...styleX.props(styles.primaryButton)}
+                  onClick={(e) => handleChangeNextPage(e)}
+                  value={formDetails.buttonName}
+                >
+                  <>{formDetails?.buttonName}</>{" "}
+                  <img src={ArrowRight} style={{ width: "fit-content" }} />
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div style={{ position: "relative" }}>
+            <img
+              src={LoadingScreenBackground}
+              {...styleX.props(styles.loadingScreenBg(loading))}
+            />
+            {loading && (
+              <img
+                src={CarImgV2}
+                {...styleX.props(styles.slowDownAndSpeedUp)}
+              />
+            )}
+            <div
+              style={{
+                position: "absolute",
+                top: loading ? "12%" : "0",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              {loading ? (
+                <div style={{ width: "100vw", padding: "0rem 1.5rem" }}>
+                  <h2>Fetching your PAN Details</h2>
+                  <small style={{ margin: "0rem", padding: "0rem" }}>
+                    Getting your PAN details by your chosen mehtod
+                  </small>
+                </div>
+              ) : (
+                <div
+                  style={{
+                    width: "100vw",
+                    padding: "1.2rem 1.5rem",
+                  }}
+                >
+                  <>
+                    <h2 style={{ padding: "0rem", margin: "0rem" }}>
+                      Verify you details
+                    </h2>
+                    <div>Aadhaar link found</div>
+                  </>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "1rem",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    {cardInfo.map((info, index) => (
+                      <InfoCard index={index} info={info} key={info.id} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

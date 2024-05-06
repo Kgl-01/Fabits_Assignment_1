@@ -7,6 +7,19 @@ export const NavigationContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false)
   const currentPageValue = useRef(null)
 
+  const [closeForm, setCloseForm] = useState(false)
+
+  const handleCloseForm = () => {
+    setPageCount(0)
+    currentPageValue.current = null
+    setCloseForm(true)
+  }
+
+  const handleOpenForm = () => {
+    setCloseForm(false)
+    setPageCount(1)
+  }
+
   const handleChangeNextPage = async (e) => {
     const { value } = e.target
     currentPageValue.current = value.toLowerCase()
@@ -44,6 +57,9 @@ export const NavigationContextProvider = ({ children }) => {
         loading,
         handleChangeLoading,
         currentPageValue,
+        handleCloseForm,
+        handleOpenForm,
+        closeForm,
       }}
     >
       {children}

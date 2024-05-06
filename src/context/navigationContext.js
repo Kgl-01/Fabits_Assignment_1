@@ -8,4 +8,7 @@ export const NavigationContext = createContext({
   hanleChangePanNo: () => null,
   loading: null,
   handleChangeLoading: () => null,
+  closeForm: null,
+  handleCloseForm: () => null,
+  handleOpenForm: () => null,
 })
