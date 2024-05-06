@@ -47,9 +47,9 @@ const InfoCard = ({ info, index }) => {
           <div style={{ fontSize: "1.5rem", fontWeight: "600" }}>
             {info.header}
           </div>
-          <span style={{ color: "#5E78AE" }}>{info.subHeader}</span>
+          <div style={{ color: "#5E78AE" }}>{info.subHeader}</div>
           {info.secondarySubHeader && (
-            <span style={{ color: "#5E78AE" }}>{info.secondarySubHeader}</span>
+            <div style={{ color: "#5E78AE" }}>{info.secondarySubHeader}</div>
           )}
         </figcaption>
       </figure>
