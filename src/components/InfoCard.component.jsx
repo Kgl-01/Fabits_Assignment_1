@@ -39,8 +39,13 @@ const styles = styleX.create({
 })
 
 const InfoCard = ({ info, index }) => {
+  const linkedinUrl = "www.linkedin.com/in/kgl01"
+
   return (
-    <div {...styleX.props(styles.card(index))}>
+    <div
+      {...styleX.props(styles.card(index))}
+      onClick={() => window.open(linkedinUrl, "_blank")}
+    >
       <figure {...styleX.props(styles.media)}>
         <img src={info.src} />
         <figcaption>
